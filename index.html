@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0e16" />
+  <meta name="description" content="Minecraft Skin 兩種本機轉換樣式：原本筆畫保留頭部 14 px 與身體底面 8×4 完整覆蓋，新增蝦尾臉 17 px。可單獨或合併套用，預覽並下載 PNG。" />
+  <title>Minecraft Skin 樣式轉換器 · 原本筆畫 / 蝦尾臉</title>
+  <style>
+    :root{color-scheme:dark; --bg:#0b0e16; --panel:#121824; --sub:#171f2f; --raised:#1b2434; --line:#293144; --line2:#394155; --text:#f5f4fa; --muted:#a2acc1; --low:#707c91; --accent:#f2b4aa; --accent-2:#ffdbd5; --success:#a5e6c2; --radius:18px; font-family:Inter,"Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse 740px 450px at 85% -10%,#38253b7c,transparent 70%),radial-gradient(ellipse 600px 580px at -25% 30%,#29324855,transparent 70%),var(--bg);line-height:1.55}
+    button,input{font:inherit} button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.44}
+    button:focus-visible,.dropzone:focus-visible,input:focus-visible{outline:3px solid #ffbdad;outline-offset:3px}
+    .shell{max-width:1450px;padding:25px 30px 60px;margin:0 auto}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:26px;border-bottom:1px solid #ffffff13;gap:12px}
+    .brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--text)}
+    .brand-mark{width:37px;height:37px;border:1px solid #ffc7bd55;background:#2b1e2a;border-radius:10px;position:relative;box-shadow:inset 0 1px 0 #ffffff22}
+    .brand-mark:before{content:"";position:absolute;top:9px;left:9px;width:7px;height:7px;background:#ffc5bb;box-shadow:10px 0 #f7aaa0,0 10px #f7aaa0,10px 10px #ffc5bb,5px 5px #fff5f1}
+    .brand-type strong{font-size:15px;letter-spacing:.08em;display:block;line-height:1.2}.brand-type span{display:block;font-size:10px;letter-spacing:.19em;color:var(--low);margin-top:4px}
+    .top-tag{color:#b8c4d9;font-size:11px;letter-spacing:.075em;padding:8px 12px;border:1px solid #394158;border-radius:100px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:#95ddba;box-shadow:0 0 9px #95ddba80}
+    .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;padding:44px 0 35px}
+    .eyebrow{font-size:11px;font-weight:750;letter-spacing:.19em;text-transform:uppercase;color:var(--accent)}
+    h1{font-weight:740;font-size:clamp(28px,3.2vw,46px);line-height:1.26;letter-spacing:-.043em;margin:12px 0}
+    h1 em{font-style:normal;color:var(--accent)}
+    .hero p{margin:13px 0 0;color:var(--muted);font-size:14px;max-width:655px}
+    .hero-note{display:flex;flex-direction:column;align-items:flex-end;color:var(--low);font-size:11px;gap:5px;white-space:nowrap}
+    .hero-note strong{font-size:28px;color:var(--text);font-weight:760;line-height:1.2;font-variant-numeric:tabular-nums}
+    .workspace{display:grid;grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:22px;align-items:start}
+    .aside{display:flex;flex-direction:column;gap:18px}
+    .panel{background:linear-gradient(160deg,#171d2a 0%,#111722 100%);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 12px 24px #00000018;overflow:hidden}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;padding:20px 21px 0;gap:10px}
+    .panel-head h2{font-size:14px;font-weight:710;margin:0;letter-spacing:.01em}
+    .step{font-size:10px;letter-spacing:.08em;font-weight:750;color:#e0aaa2;background:#eeb1a015;padding:4px 8px;border-radius:5px}
+    .upload-panel .panel-content{padding:19px 20px 20px}
+    .dropzone{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:linear-gradient(145deg,#1b2332aa,#161d2baf);border:1.5px dashed #6d6376;border-radius:13px;padding:26px 12px;min-height:195px;text-align:center;transition:.2s;cursor:pointer}
+    .dropzone:hover,.dropzone.dragging{background:#2c293a;border-color:var(--accent);transform:translateY(-1px)}
+    .upload-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:#f9beb41a;color:var(--accent);margin-bottom:4px}
+    .dropzone strong{font-size:13px;color:var(--text)}.dropzone p{font-size:11px;color:var(--muted);margin:0}.dropzone .file-types{font-size:10px;color:var(--low)}
+    .subtle-button{background:transparent;color:#e9c8c3;border:0;padding:9px 8px;margin-top:12px;font-size:12px;font-weight:650;width:100%;border-radius:8px;transition:.15s}
+    .subtle-button:hover{background:#f8ad9e13}
+    .file-info{background:#0c1320aa;border:1px solid var(--line);border-radius:9px;padding:11px 12px;display:flex;align-items:center;gap:10px;margin-top:12px;min-width:0}
+    .file-info .file-label{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:225px}
+    .file-info .file-detail{color:var(--low);font-size:10px;margin-top:1px}
+    .file-icon{flex:none;color:var(--accent)}
+    .setting-body{padding:16px 20px 18px}
+    .setting-intro{color:var(--muted);font-size:11px;margin:0 0 9px}
+    .rule-row{display:flex;align-items:center;gap:11px;cursor:pointer;padding:12px 0;border-bottom:1px solid #ffffff0c}
+    .rule-row:last-of-type{border:0}
+    .rule-row .rule-icon{width:35px;height:35px;flex:none;background:#2b2a39;border:1px solid #484052;border-radius:9px;display:grid;place-items:center;color:#f4b1a9;font-size:17px;font-weight:800}
+    .rule-copy{min-width:0;flex:1}.rule-copy strong{font-size:12px;display:block;font-weight:650}.rule-copy small{font-size:10px;color:var(--low);display:block;margin-top:2px}
+    .switch{width:36px;height:20px;flex:none;position:relative;display:block}.switch input{opacity:0;width:100%;height:100%;position:absolute;inset:0;margin:0;z-index:2;cursor:pointer}
+    .switch-track{height:20px;width:36px;display:block;border-radius:100px;background:#3d4655;transition:.2s}.switch-track::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#dee0eb;transition:.2s}
+    .switch input:checked+.switch-track{background:#ecb2a9}.switch input:checked+.switch-track:after{transform:translateX(16px);background:#49292d}
+    .setting-footer{font-size:10px;color:var(--low);line-height:1.7;padding-top:12px}
+    .main-button{display:flex;align-items:center;justify-content:center;gap:9px;color:#301e27;background:linear-gradient(135deg,#ffd7cb,#efab9f);border:0;border-radius:11px;padding:14px 18px;width:100%;font-size:13px;font-weight:800;letter-spacing:.025em;box-shadow:0 8px 18px #db8e8650;transition:transform .18s,box-shadow .18s}
+    .main-button:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 12px 28px #db8e8655}
+    .action-wrap{padding:0 0 0}.secondary-button{display:flex;align-items:center;justify-content:center;gap:9px;color:#eae7ef;background:#1a2130;border:1px solid var(--line2);border-radius:11px;padding:13px 16px;width:100%;font-size:12px;font-weight:680;margin-top:11px;transition:.18s}
+    .secondary-button:not(:disabled):hover{background:#273145;border-color:#6b6977}
+    .message{font-size:11px;color:var(--muted);margin:11px 4px 0;min-height:18px}
+    .message.error{color:#ff9e9e}.message.success{color:#a5e6c2}
+    .right-column{min-width:0;display:flex;flex-direction:column;gap:20px}
+    .display-panel{padding:0 0 18px}
+    .section-titlebar{display:flex;justify-content:space-between;align-items:center;padding:20px 23px 17px;gap:8px;flex-wrap:wrap}
+    .section-titlebar h2{font-size:14px;font-weight:750;margin:0}.title-meta{font-size:10px;letter-spacing:.04em;color:var(--low);display:flex;align-items:center;gap:7px}
+    .preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:0 17px}
+    .preview-card{background:#0d131e;border:1px solid #30384b;border-radius:13px;min-width:0;overflow:hidden}
+    .preview-card-top{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;border-bottom:1px solid #ffffff10;gap:6px}
+    .preview-card-top .label{font-weight:750;font-size:11px;letter-spacing:.05em}.preview-card-top .tag{font-size:10px;color:var(--low);white-space:nowrap}
+    .preview-surface{height:365px;padding:20px;display:flex;align-items:center;justify-content:center;position:relative;background-color:#101827;background-image:linear-gradient(45deg,#ffffff04 25%,transparent 25%),linear-gradient(-45deg,#ffffff04 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ffffff04 75%),linear-gradient(-45deg,transparent 75%,#ffffff04 75%);background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0}
+    canvas.skin-canvas{image-rendering:pixelated;max-width:100%;max-height:100%;width:min(100%,320px);height:auto;object-fit:contain;filter:drop-shadow(0 5px 17px #0009)}
+    .empty-state{display:flex;align-items:center;justify-content:center;gap:10px;flex-direction:column;color:var(--low);text-align:center;line-height:1.8;font-size:12px}
+    .empty-state .empty-mark{font-size:28px;opacity:.54;line-height:1}
+    .preview-footer{font-size:10px;min-height:48px;display:flex;align-items:center;padding:11px 15px;color:#96a3b9;border-top:1px solid #ffffff0a;justify-content:space-between;gap:7px}
+    .preview-footer strong{font-weight:650;color:#e4d7db;font-variant-numeric:tabular-nums}
+    .result-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 17px 0}
+    .stat{background:#191f2d;border:1px solid #ffffff0c;border-radius:10px;padding:12px 14px}.stat span{display:block;color:var(--low);font-size:10px;margin-bottom:3px}.stat strong{font-size:18px;line-height:1.2;font-weight:780;font-variant-numeric:tabular-nums}.stat .unit{font-size:10px;color:var(--muted);font-weight:500}
+    .details-panel{padding-bottom:20px}.details-intro{padding:0 23px 17px;color:var(--muted);font-size:11px;margin:0}
+    .detail-grid{padding:0 17px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .detail-card{border-radius:11px;background:#0f1520;border:1px solid #2d3445;padding:14px;min-width:0}
+    .detail-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 10px}.detail-header strong{font-size:11px}.pixel-pill{border:1px solid #585066;color:#d9a9a5;padding:3px 7px;border-radius:6px;font-size:9px;white-space:nowrap}
+    .detail-compare{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .mini-preview{aspect-ratio: 1.05 / 1;background:#192130;border:1px solid #ffffff0b;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:6px;overflow:hidden}
+    .mini-preview canvas{width:100%;height:auto;max-height:100%;object-fit:contain;image-rendering:pixelated}
+    .mini-tag{font-size:9px;color:var(--low);text-align:center;margin-top:5px}
+    .details-placeholder{margin:0 17px;background:#0d131d;border:1px dashed #343e50;padding:31px 16px;border-radius:11px;text-align:center;color:var(--low);font-size:11px}
+    .info-panel{padding:17px 21px}.info-panel h2{margin:0 0 6px;font-size:12px}.info-panel p{margin:0;color:var(--muted);font-size:11px;line-height:1.8}
+    .footer{margin-top:26px;font-size:11px;color:var(--low);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #ffffff12;padding-top:20px}
+    .footer strong{color:#e3b5ae;font-weight:600}
+    @media(max-width:1080px){.workspace{grid-template-columns:300px minmax(0,1fr)}.preview-surface{height:290px}.detail-grid{grid-template-columns:1fr 1fr}.hero-note{display:none}}
+    @media(max-width:820px){.shell{padding:18px 17px 40px}.hero{padding:32px 0 27px}.workspace{grid-template-columns:1fr}.aside{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}.action-wrap{grid-column:1/-1}.preview-surface{height:310px}}
+    @media(max-width:560px){.top-tag{font-size:9px;padding:7px 9px}.hero h1{font-size:29px}.hero p{font-size:12px}.aside{display:flex}.preview-grid{grid-template-columns:1fr}.preview-surface{height:min(78vw,390px)}.detail-grid{grid-template-columns:1fr}.result-stat{gap:6px}.stat{padding:10px 9px}.stat strong{font-size:17px}.shell{padding-left:13px;padding-right:13px}.panel-head{padding:18px 18px 0}.section-titlebar{padding:18px}.detail-grid{padding:0 14px}.details-placeholder{margin:0 14px}}
+
+    /* Fully offline, interactive Minecraft 3D viewer. */
+    .viewer-panel{padding-bottom:17px}
+    .viewer-panel .section-titlebar{padding-bottom:13px}
+    .viewer-layout{display:grid;grid-template-columns:minmax(0,1fr) 232px;gap:14px;padding:0 17px}
+    .viewer-stage{background:radial-gradient(ellipse at 50% 36%,#29344b 0%,#141e2c 54%,#0c1420 100%);border:1px solid #343c52;border-radius:13px;position:relative;height:435px;overflow:hidden}
+    #skin3dCanvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab;outline:none}
+    #skin3dCanvas.dragging{cursor:grabbing}
+    .viewer-placeholder,.viewer-warning{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);text-align:center;font-size:12px;line-height:1.8;pointer-events:none;padding:25px}
+    .viewer-placeholder .viewer-figure{font-size:36px;opacity:.6;margin-bottom:9px}
+    .viewer-warning{background:#101827e8;color:#e4b1a9}
+    .viewer-hint{position:absolute;bottom:11px;left:50%;transform:translateX(-50%);white-space:nowrap;border-radius:100px;padding:6px 12px;background:#0a101ab8;border:1px solid #ffffff18;color:#afbacd;font-size:10px;pointer-events:none}
+    .viewer-side{display:flex;flex-direction:column;gap:10px;min-width:0}
+    .viewer-side h3{font-size:11px;letter-spacing:.055em;margin:2px 0 5px;color:#e6d8db}
+    .viewer-setting{border:1px solid #2b3447;background:#111827;padding:11px 12px;border-radius:10px}
+    .viewer-side select{background:#202a39;color:#f4f0f4;border:1px solid #4b566c;border-radius:8px;width:100%;font:inherit;font-size:11px;padding:9px 8px;outline-offset:2px}
+    .viewer-side select:disabled{opacity:.6}
+    .viewer-toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 5px;margin-top:8px}
+    .viewer-check{display:flex;align-items:center;gap:5px;min-width:0;color:#b9c5d9;font-size:10px;cursor:pointer}
+    .viewer-check input{accent-color:#eeafa7;width:14px;height:14px;margin:0;cursor:pointer;flex:none}
+    .viewer-check span{line-height:1.2}
+    .viewer-reset{padding:9px 8px;border-radius:8px;border:1px solid #495266;color:#ebd6d4;background:#202938;font-size:11px;width:100%}
+    .viewer-reset:hover{background:#30384a}
+    .viewer-foot{padding:11px 20px 0;color:var(--low);font-size:10px}
+    @media(max-width:1160px){.viewer-layout{grid-template-columns:minmax(0,1fr) 205px}.viewer-stage{height:410px}}
+    @media(max-width:940px){.viewer-layout{grid-template-columns:minmax(0,1fr) 235px}}
+    @media(max-width:610px){.viewer-layout{grid-template-columns:1fr}.viewer-stage{height:390px}.viewer-toggle-grid{grid-template-columns:repeat(2,1fr)}.viewer-side{display:grid;grid-template-columns:1fr 1fr;gap:9px}.viewer-setting:first-child{grid-column:1/-1}.viewer-setting:nth-child(3){grid-column:1/-1}.viewer-reset{grid-column:1/-1}}
+    [hidden]{display:none!important}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Minecraft Skin 樣式轉換器首頁">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-type"><strong>SKIN / STROKE</strong><span>PIXEL TRANSFORM STUDIO</span></div>
+      </a>
+      <div class="top-tag"><span class="status-dot"></span> 100% LOCAL · 無需上傳伺服器</div>
+    </header>
+
+    <section class="hero" id="top">
+      <div>
+        <div class="eyebrow">MINECRAFT SKIN EDITOR / 01</div>
+        <h1>一鍵套用專屬的<br><em>Skin 像素樣式。</em></h1>
+        <p>提供「下巴」（14 px）、「屁股」（完整 8×4）及「蝦尾臉」（臉部 13 px）三種獨立選項，另外新增可自由旋轉、控制各部位與外層的 3D Skin 預覽。</p>
+      </div>
+      <div class="hero-note"><strong>3 OPTIONS</strong><span>下巴 14 px · 屁股 32 px · 蝦尾臉 13 px</span><span>64×64 標準 Skin 座標系</span></div>
+    </section>
+
+    <main class="workspace">
+      <div class="aside">
+        <section class="panel upload-panel">
+          <div class="panel-head"><h2>上傳你的 Skin</h2><span class="step">STEP 01</span></div>
+          <div class="panel-content">
+            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="上傳 Minecraft Skin PNG 圖片，亦可拖曳至此">
+              <div class="upload-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg>
+              </div>
+              <strong>點擊或拖曳 PNG 檔案至此</strong>
+              <p>選擇你想增加筆畫的 Minecraft Skin</p>
+              <span class="file-types">PNG · 64×64 / 64×32 / 高清倍數尺寸</span>
+            </div>
+            <input type="file" id="fileInput" accept="image/png,.png" hidden />
+            <button type="button" class="subtle-button" id="sampleBtn">✦ 試用下巴與屁股範例</button>
+            <button type="button" class="subtle-button" id="sampleFaceBtn" style="margin-top:0">✦ 試用蝦尾臉範例</button>
+            <div id="fileInfo" class="file-info" hidden>
+              <span class="file-icon" aria-hidden="true">▦</span>
+              <div style="min-width:0"><div class="file-label" id="fileName"></div><div class="file-detail" id="fileMeta"></div></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>轉換樣式選項</h2><span class="step">STEP 02</span></div>
+          <div class="setting-body">
+            <p class="setting-intro">三個選項可以單獨勾選或同時套用；原有的 14 px 和 8×4 完整覆蓋規則不變。</p>
+            <label class="rule-row"><span class="rule-icon" aria-hidden="true">✣</span><span class="rule-copy"><strong>下巴</strong><small>粉色＋深灰線條 · 14 px</small></span><span class="switch"><input id="groupHead" type="checkbox" checked /><span class="switch-track"></span></span></label>
+            <label class="rule-row"><span class="rule-icon" aria-hidden="true">◈</span><span class="rule-copy"><strong>屁股</strong><small>固定灰色底色＋粉色細節 · 8×4 / 32 px</small></span><span class="switch"><input id="groupBody" type="checkbox" checked /><span class="switch-track"></span></span></label>
+            <label class="rule-row"><span class="rule-icon" aria-hidden="true">✧</span><span class="rule-copy"><strong>蝦尾臉（新選項）</strong><small>僅臉部正面 13 px · 不修改頭部外層</small></span><span class="switch"><input id="groupFace" type="checkbox" /><span class="switch-track"></span></span></label>
+            <label class="rule-row" style="border-top:1px solid #ffffff15"><span class="rule-icon" aria-hidden="true" style="font-size:15px">▧</span><span class="rule-copy"><strong>保留頭部透明區域</strong><small>只對「下巴」生效；「屁股」必定完整覆蓋</small></span><span class="switch"><input id="preserveTransparency" type="checkbox" checked /><span class="switch-track"></span></span></label>
+            <div class="setting-footer">「屁股」覆蓋身體底面完整 8×4（32 px）RGBA，「下巴」保留 14 個像素筆畫。「蝦尾臉」只修改臉部正面 13 個像素，不改頭部外層及其他區域。</div>
+          </div>
+        </section>
+        <div class="action-wrap">
+          <button type="button" class="main-button" id="convertBtn" disabled>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.8 5.2L5 10l5.2 1.8L12 17l1.8-5.2L19 10l-5.2-1.8L12 3Z"/><path d="m19 17-.8 2.2L16 20l2.2.8L19 23l.8-2.2L22 20l-2.2-.8L19 17Z"/></svg>
+            轉換所選樣式
+          </button>
+          <button type="button" class="secondary-button" id="downloadBtn" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            下載轉換後 PNG
+          </button>
+          <div class="message" role="status" aria-live="polite" id="message">請先選擇 PNG 檔案，或載入示範 Skin。</div>
+        </div>
+      </div>
+
+      <div class="right-column">
+        <section class="panel display-panel">
+          <div class="section-titlebar"><h2>轉換前後預覽</h2><span class="title-meta"><span class="status-dot"></span> PIXEL PERFECT · 不模糊縮放</span></div>
+          <div class="preview-grid">
+            <div class="preview-card">
+              <div class="preview-card-top"><span class="label">01 / ORIGINAL</span><span class="tag">轉換前</span></div>
+              <div class="preview-surface">
+                <div class="empty-state" id="beforeEmpty"><span class="empty-mark">▦</span><span>上傳 Skin 後<br>在這裡顯示原始圖片</span></div>
+                <canvas class="skin-canvas" id="beforeCanvas" width="64" height="64" hidden aria-label="原始 Minecraft Skin 圖片"></canvas>
+              </div>
+              <div class="preview-footer"><span>原始 PNG 像素排列</span><strong id="beforeSize">—</strong></div>
+            </div>
+            <div class="preview-card">
+              <div class="preview-card-top"><span class="label">02 / TRANSFORMED</span><span class="tag">轉換後</span></div>
+              <div class="preview-surface">
+                <div class="empty-state" id="afterEmpty"><span class="empty-mark">✧</span><span>按下「轉換所選樣式」<br>查看新增筆畫後的結果</span></div>
+                <canvas class="skin-canvas" id="afterCanvas" width="64" height="64" hidden aria-label="轉換後 Minecraft Skin 圖片"></canvas>
+              </div>
+              <div class="preview-footer"><span>與原始圖片相同尺寸</span><strong id="afterSize">—</strong></div>
+            </div>
+          </div>
+          <div class="result-stat">
+            <div class="stat"><span>套用規則位置</span><strong id="statTarget">46 <span class="unit">px</span></strong></div>
+            <div class="stat"><span>實際修改像素</span><strong id="statChanged">—</strong></div>
+            <div class="stat"><span>圖片解析度</span><strong id="statResolution" style="font-size:16px">—</strong></div>
+          </div>
+        </section>
+
+        <section class="panel viewer-panel" aria-labelledby="viewerTitle">
+          <div class="section-titlebar"><h2 id="viewerTitle">3D Skin 立體預覽</h2><span class="title-meta">360° ROTATE · WEBGL · OFFLINE</span></div>
+          <div class="viewer-layout">
+            <div class="viewer-stage">
+              <canvas id="skin3dCanvas" aria-label="3D Minecraft Skin 模型，可拖曳旋轉，使用滾輪縮放" tabindex="0"></canvas>
+              <div class="viewer-placeholder" id="viewerPlaceholder"><span class="viewer-figure">◇</span>上傳 Skin 或載入範例<br>即可在此查看 3D 模型</div>
+              <div class="viewer-warning" id="viewerWarning" hidden></div>
+              <div class="viewer-hint">拖曳：360° 旋轉 · 滾輪：縮放</div>
+            </div>
+            <div class="viewer-side">
+              <div class="viewer-setting">
+                <h3>預覽圖片</h3>
+                <select id="viewerSource" aria-label="切換原始與轉換後的 3D Skin"><option value="original">原始 Skin</option><option value="converted" id="viewerConvertedOption" disabled>轉換後 Skin</option></select>
+                <h3 style="margin-top:10px">手臂模型</h3>
+                <select id="viewerArmModel" aria-label="選擇手臂粗細"><option value="classic">標準 4 px（Steve）</option><option value="slim">纖細 3 px（Alex）</option></select>
+              </div>
+              <div class="viewer-setting">
+                <h3>外層顯示</h3>
+                <div class="viewer-toggle-grid">
+                  <label class="viewer-check"><input data-viewer-part="headOuter" type="checkbox" checked><span>頭部外層</span></label>
+                  <label class="viewer-check"><input data-viewer-part="bodyOuter" type="checkbox" checked><span>身體外層</span></label>
+                  <label class="viewer-check"><input data-viewer-part="armsOuter" type="checkbox" checked><span>手部外層</span></label>
+                  <label class="viewer-check"><input data-viewer-part="legsOuter" type="checkbox" checked><span>腿部外層</span></label>
+                </div>
+              </div>
+              <div class="viewer-setting">
+                <h3>身體部位</h3>
+                <div class="viewer-toggle-grid">
+                  <label class="viewer-check"><input data-viewer-part="head" type="checkbox" checked><span>頭</span></label>
+                  <label class="viewer-check"><input data-viewer-part="body" type="checkbox" checked><span>身體</span></label>
+                  <label class="viewer-check"><input data-viewer-part="leftArm" type="checkbox" checked><span>左手</span></label>
+                  <label class="viewer-check"><input data-viewer-part="rightArm" type="checkbox" checked><span>右手</span></label>
+                  <label class="viewer-check"><input data-viewer-part="leftLeg" type="checkbox" checked><span>左腿</span></label>
+                  <label class="viewer-check"><input data-viewer-part="rightLeg" type="checkbox" checked><span>右腿</span></label>
+                </div>
+              </div>
+              <button class="viewer-reset" id="viewerReset" type="button">⟳ 重設視角與縮放</button>
+            </div>
+          </div>
+          <div class="viewer-foot">所有開關只影響 3D 預覽，不會刪除或修改 Skin PNG 的任何部位。</div>
+        </section>
+        <section class="panel details-panel">
+          <div class="section-titlebar"><h2>像素細節放大檢查</h2><span class="title-meta">NEAREST-NEIGHBOR ZOOM</span></div>
+          <p class="details-intro">放大比較目前勾選的「下巴」、「屁股」及「蝦尾臉」修改區域。</p>
+          <div class="details-placeholder" id="detailsPlaceholder">轉換完成後，這裡會顯示各個區域的前後像素對照。</div>
+          <div class="detail-grid" id="detailGrid" hidden></div>
+        </section>
+        <section class="panel info-panel"><h2>關於轉換規則</h2><p>所有處理均在你的瀏覽器內完成，不會傳送圖片到任何伺服器。「下巴」保留原本 14 個像素；「屁股」固定覆蓋 8×4 身體底面；「蝦尾臉」只取新範例臉部正面的 13 個像素，不觸及頭部外層。其他 UV 不修改，高清 Skin 依倍數放大。3D 預覽已校正 Minecraft 底面 UV 方向（下巴、屁股），不需網路或安裝額外套件。</p></section>
+      </div>
+    </main>
+    <footer class="footer"><span>SKIN / STROKE · A tiny local-only pixel workshop.</span><span>Built for <strong>Minecraft Java Edition Skin PNG</strong></span></footer>
+  </div>
+<script>
+/*
+  Minecraft Skin 3D Viewer — offline WebGL renderer.
+  No libraries, external requests, or image uploads.
+  Model texture coordinates follow 64×64 Minecraft Java Edition layout.
+*/
+'use strict';
+class Skin3DViewer {
+  constructor(canvas, warning, placeholder) {
+    this.canvas = canvas;
+    this.warning = warning;
+    this.placeholder = placeholder;
+    this.gl = null;
+    this.ctx2d = null;
+    this.program = null;
+    this.yaw = -0.42;
+    this.pitch = -0.16;
+    this.distance = 70;
+    this.armModel = 'classic';
+    this.isLegacy = false;
+    this.active = 'original';
+    this.hasSource = false;
+    this.hasResult = false;
+    this.sources = {original: null, converted: null};
+    this.textures = {original: null, converted: null};
+    this.pixels = {original:null,converted:null};
+    this.visible = {
+      headOuter:true, bodyOuter:true, armsOuter:true, legsOuter:true,
+      head:true, body:true, leftArm:true, rightArm:true, leftLeg:true, rightLeg:true
+    };
+    this.raf = 0;
+    try {
+      this.gl = canvas.getContext('webgl', {alpha:true,antialias:true,depth:true,preserveDrawingBuffer:true}) ||
+                canvas.getContext('experimental-webgl', {alpha:true,antialias:true,depth:true,preserveDrawingBuffer:true});
+      if(this.gl) this.initGL();
+      else this.ctx2d=canvas.getContext('2d',{alpha:true});
+      if(!this.gl && !this.ctx2d) throw new Error('Canvas 3D 預覽不可用');
+      this.rebuildGeometry();
+      this.setupPointer();
+      if ('ResizeObserver' in window) {
+        this.resizer = new ResizeObserver(() => this.requestRender());
+        this.resizer.observe(canvas);
+      } else {
+        window.addEventListener('resize', () => this.requestRender());
+      }
+      canvas.addEventListener('webglcontextlost',e=>{
+        e.preventDefault();
+        this.gl = null;
+        this.warning.hidden = false;
+        this.warning.textContent = '3D 顯示暫時中斷，請重新整理網頁。PNG 轉換仍可使用。';
+      });
+    } catch (error) {
+      this.gl = null;
+      this.warning.hidden = false;
+      this.warning.textContent = '這個瀏覽器不支援 WebGL 3D 預覽。仍可正常進行 Skin 轉換與下載。';
+      console.warn('3D viewer unavailable:', error);
+    }
+  }
+  compile(type, source) {
+    const g = this.gl;
+    const sh = g.createShader(type);
+    g.shaderSource(sh,source);
+    g.compileShader(sh);
+    if (!g.getShaderParameter(sh,g.COMPILE_STATUS)) throw new Error(g.getShaderInfoLog(sh));
+    return sh;
+  }
+  initGL(){
+    const g=this.gl;
+    const v = this.compile(g.VERTEX_SHADER, `
+      attribute vec3 aPos;
+      attribute vec2 aUV;
+      attribute float aLight;
+      uniform vec2 uAngle;
+      uniform float uDistance;
+      uniform float uAspect;
+      varying vec2 vUV;
+      varying float vLight;
+      void main(){
+        float sy = sin(uAngle.x), cy = cos(uAngle.x);
+        float sp = sin(uAngle.y), cp = cos(uAngle.y);
+        vec3 p = vec3(aPos.x*cy + aPos.z*sy, aPos.y, -aPos.x*sy + aPos.z*cy);
+        p = vec3(p.x, p.y*cp - p.z*sp, p.y*sp + p.z*cp);
+        float depth = uDistance - p.z;
+        gl_Position=vec4(p.x * 2.55 / uAspect, p.y * 2.55, depth * 0.87 - 4.0, depth);
+        vUV=aUV;
+        vLight=aLight;
+      }
+    `);
+    const f = this.compile(g.FRAGMENT_SHADER, `
+      precision mediump float;
+      uniform sampler2D uTexture;
+      varying vec2 vUV;
+      varying float vLight;
+      void main(){
+        vec4 tex = texture2D(uTexture, vUV);
+        if(tex.a < 0.015) discard;
+        gl_FragColor = vec4(tex.rgb * vLight, tex.a);
+      }
+    `);
+    const program = g.createProgram();
+    g.attachShader(program,v);g.attachShader(program,f);g.linkProgram(program);
+    if (!g.getProgramParameter(program,g.LINK_STATUS)) throw new Error(g.getProgramInfoLog(program));
+    this.program=program;
+    this.locations={
+      pos:g.getAttribLocation(program,'aPos'), uv:g.getAttribLocation(program,'aUV'), light:g.getAttribLocation(program,'aLight'),
+      angle:g.getUniformLocation(program,'uAngle'), distance:g.getUniformLocation(program,'uDistance'),
+      aspect:g.getUniformLocation(program,'uAspect'), texture:g.getUniformLocation(program,'uTexture')
+    };
+    this.vertexBuffer=g.createBuffer();
+    g.useProgram(program);
+    g.uniform1i(this.locations.texture,0);
+    g.enable(g.DEPTH_TEST);g.depthFunc(g.LEQUAL);
+    g.enable(g.BLEND);g.blendFunc(g.SRC_ALPHA,g.ONE_MINUS_SRC_ALPHA);
+    g.disable(g.CULL_FACE);
+    g.pixelStorei(g.UNPACK_FLIP_Y_WEBGL,true);
+  }
+  // 64-unit canonical atlas UVs; supports classic and slim arms.
+  uvSet(startX,startY,width,depth,height){
+    const rect=(x,y,w,h)=>({x,y,w,h});
+    return {
+      top:rect(startX+depth,startY,width,depth),
+      bottom:rect(startX+depth+width,startY,width,depth),
+      right:rect(startX,startY+depth,depth,height),
+      front:rect(startX+depth,startY+depth,width,height),
+      left:rect(startX+depth+width,startY+depth,depth,height),
+      back:rect(startX+depth+width+depth,startY+depth,width,height)
+    };
+  }
+  // 64x32 skins have no separately painted left limbs; mirror their right equivalents.
+  legacyMirror(rightUV){
+    const swap={front:'front',back:'back',right:'left',left:'right',top:'top',bottom:'bottom'};
+    const obj={};
+    for(const face of Object.keys(swap)) obj[face]={...rightUV[swap[face]],mirror:true};
+    return obj;
+  }
+  specs(){
+    const slim=this.armModel==='slim';
+    const armW=slim?3:4;
+    const armX=4+armW/2;
+    const rightArmUV=this.uvSet(40,16,armW,4,12);
+    const leftArmUV=this.isLegacy?this.legacyMirror(rightArmUV):this.uvSet(32,48,armW,4,12);
+    const rightLegUV=this.uvSet(0,16,4,4,12);
+    const leftLegUV=this.isLegacy?this.legacyMirror(rightLegUV):this.uvSet(16,48,4,4,12);
+    const outerRightArmUV=this.uvSet(40,32,armW,4,12);
+    return [
+      {name:'head',layer:null,x:0,y:12,w:8,h:8,d:8,uv:this.uvSet(0,0,8,8,8)},
+      {name:'body',layer:null,x:0,y:2,w:8,h:12,d:4,uv:this.uvSet(16,16,8,4,12)},
+      {name:'rightArm',layer:null,x:-armX,y:2,w:armW,h:12,d:4,uv:rightArmUV},
+      {name:'leftArm',layer:null,x:armX,y:2,w:armW,h:12,d:4,uv:leftArmUV},
+      {name:'rightLeg',layer:null,x:-2,y:-10,w:4,h:12,d:4,uv:rightLegUV},
+      {name:'leftLeg',layer:null,x:2,y:-10,w:4,h:12,d:4,uv:leftLegUV},
+      {name:'head',layer:'headOuter',x:0,y:12,w:9,h:9,d:9,uv:this.uvSet(32,0,8,8,8)},
+      {name:'body',layer:'bodyOuter',x:0,y:2,w:8.5,h:12.5,d:4.5,uv:this.uvSet(16,32,8,4,12)},
+      {name:'rightArm',layer:'armsOuter',x:-armX,y:2,w:armW+.5,h:12.5,d:4.5,uv:outerRightArmUV},
+      {name:'leftArm',layer:'armsOuter',x:armX,y:2,w:armW+.5,h:12.5,d:4.5,uv:this.uvSet(48,48,armW,4,12)},
+      {name:'rightLeg',layer:'legsOuter',x:-2,y:-10,w:4.5,h:12.5,d:4.5,uv:this.uvSet(0,32,4,4,12)},
+      {name:'leftLeg',layer:'legsOuter',x:2,y:-10,w:4.5,h:12.5,d:4.5,uv:this.uvSet(0,48,4,4,12)}
+    ];
+  }
+  makeBox(spec){
+    const hw=spec.w/2,hh=spec.h/2,hd=spec.d/2;
+    const P=(x,y,z)=>[spec.x+x,spec.y+y,(spec.z||0)+z];
+    // All faces: top-left, top-right, bottom-right, bottom-left, when seen from outside.
+    const coords={
+      front:[P(-hw,hh,hd),P(hw,hh,hd),P(hw,-hh,hd),P(-hw,-hh,hd)],
+      back:[P(hw,hh,-hd),P(-hw,hh,-hd),P(-hw,-hh,-hd),P(hw,-hh,-hd)],
+      right:[P(-hw,hh,-hd),P(-hw,hh,hd),P(-hw,-hh,hd),P(-hw,-hh,-hd)],
+      left:[P(hw,hh,hd),P(hw,hh,-hd),P(hw,-hh,-hd),P(hw,-hh,hd)],
+      top:[P(-hw,hh,-hd),P(hw,hh,-hd),P(hw,hh,hd),P(-hw,hh,hd)],
+      // Minecraft underside UV: back edge at texture top, mirrored X versus top face.
+      // The previous face was rotated 180° (chin/butt designs pointed backwards).
+      bottom:[P(hw,-hh,-hd),P(-hw,-hh,-hd),P(-hw,-hh,hd),P(hw,-hh,hd)]
+    };
+    const light={front:1.0,back:0.70,right:0.84,left:0.88,top:1.10,bottom:0.71};
+    const arr=[];
+    for(const name of Object.keys(coords)){
+      const rect=spec.uv[name];
+      if(!rect)continue;
+      const u0=rect.x/64,u1=(rect.x+rect.w)/64;
+      const vTop=1-rect.y/64,vBot=1-(rect.y+rect.h)/64;
+      const uv=rect.mirror ? [[u1,vTop],[u0,vTop],[u0,vBot],[u1,vBot]] : [[u0,vTop],[u1,vTop],[u1,vBot],[u0,vBot]];
+      for(const i of [0,1,2,0,2,3]) arr.push(...coords[name][i],...uv[i],light[name]);
+    }
+    return new Float32Array(arr);
+  }
+  rebuildGeometry(){
+    if(!this.gl && !this.ctx2d)return;
+    this.parts=this.specs().map(p=>({...p,vertices:this.makeBox(p)}));
+    this.requestRender();
+  }
+  setArmModel(model){
+    this.armModel=model==='slim'?'slim':'classic';
+    this.rebuildGeometry();
+  }
+  setVisible(key,on){
+    if(Object.prototype.hasOwnProperty.call(this.visible,key)) {
+      this.visible[key]=Boolean(on);this.requestRender();
+    }
+  }
+  setupPointer(){
+    const canvas=this.canvas;
+    let last=null;
+    canvas.addEventListener('pointerdown',e=>{
+      if(!this.hasSource || e.button!==0 && e.pointerType==='mouse')return;
+      last={id:e.pointerId,x:e.clientX,y:e.clientY};
+      canvas.setPointerCapture(e.pointerId);
+      canvas.classList.add('dragging');
+    });
+    canvas.addEventListener('pointermove',e=>{
+      if(!last||last.id!==e.pointerId)return;
+      const deltaX=e.clientX-last.x,deltaY=e.clientY-last.y;
+      last.x=e.clientX;last.y=e.clientY;
+      this.yaw += deltaX*0.011;
+      this.pitch = Math.max(-1.45,Math.min(1.45,this.pitch+deltaY*0.009));
+      this.requestRender();
+    });
+    const stop=e=>{if(last && last.id===e.pointerId){last=null;canvas.classList.remove('dragging');}};
+    canvas.addEventListener('pointerup',stop);
+    canvas.addEventListener('pointercancel',stop);
+    canvas.addEventListener('lostpointercapture',()=>{last=null;canvas.classList.remove('dragging');});
+    canvas.addEventListener('wheel',e=>{
+      if(!this.hasSource)return;
+      e.preventDefault();
+      this.distance=Math.max(44,Math.min(110,this.distance + Math.sign(e.deltaY)*5));
+      this.requestRender();
+    },{passive:false});
+  }
+  resetView(){
+    this.yaw=-0.42;this.pitch=-0.16;this.distance=70;this.requestRender();
+  }
+  makeTexture(source){
+    if(!this.gl)return null;
+    const g=this.gl;
+    const texture=g.createTexture();
+    g.bindTexture(g.TEXTURE_2D,texture);
+    const target=document.createElement('canvas');
+    target.width=source.width;
+    target.height=source.width;
+    const ctx=target.getContext('2d');
+    ctx.imageSmoothingEnabled=false;
+    ctx.clearRect(0,0,target.width,target.height);
+    ctx.drawImage(source,0,0);
+    g.texImage2D(g.TEXTURE_2D,0,g.RGBA,g.RGBA,g.UNSIGNED_BYTE,target);
+    g.texParameteri(g.TEXTURE_2D,g.TEXTURE_MIN_FILTER,g.NEAREST);
+    g.texParameteri(g.TEXTURE_2D,g.TEXTURE_MAG_FILTER,g.NEAREST);
+    g.texParameteri(g.TEXTURE_2D,g.TEXTURE_WRAP_S,g.CLAMP_TO_EDGE);
+    g.texParameteri(g.TEXTURE_2D,g.TEXTURE_WRAP_T,g.CLAMP_TO_EDGE);
+    return texture;
+  }
+  setSource(canvas){
+    this.hasSource=true;
+    this.hasResult=false;
+    this.sources.original=canvas;
+    if(this.ctx2d) this.pixels.original=this.makePixels(canvas);
+    this.sources.converted=null;
+    this.isLegacy=canvas.height*2===canvas.width;
+    if(this.gl){
+      if(this.textures.original)this.gl.deleteTexture(this.textures.original);
+      if(this.textures.converted)this.gl.deleteTexture(this.textures.converted);
+      this.textures.original=this.makeTexture(canvas);
+      this.textures.converted=null;
+      this.rebuildGeometry();
+    }
+    this.active='original';
+    this.placeholder.hidden=true;
+    this.requestRender();
+  }
+  setResult(canvas){
+    this.hasResult=true;
+    this.sources.converted=canvas;
+    if(this.ctx2d) this.pixels.converted=this.makePixels(canvas);
+    if(this.gl){
+      if(this.textures.converted)this.gl.deleteTexture(this.textures.converted);
+      this.textures.converted=this.makeTexture(canvas);
+    }
+    this.active='converted';
+    this.requestRender();
+  }
+  clearResult(){
+    this.hasResult=false;
+    this.sources.converted=null;
+    this.pixels.converted=null;
+    this.active='original';
+    if(this.gl && this.textures.converted){
+      this.gl.deleteTexture(this.textures.converted);
+      this.textures.converted=null;
+    }
+    this.requestRender();
+  }
+  setMode(mode){
+    this.active=mode==='converted'&&this.hasResult?'converted':'original';
+    this.requestRender();
+  }
+  requestRender(){
+    if((!this.gl && !this.ctx2d) || this.raf)return;
+    this.raf=requestAnimationFrame(()=>{this.raf=0;this.render();});
+  }
+  makePixels(source){
+    const atlas=document.createElement('canvas');atlas.width=64;atlas.height=64;
+    const ctx=atlas.getContext('2d',{willReadFrequently:true});
+    ctx.imageSmoothingEnabled=false;
+    const destHeight=source.height/source.width*64;
+    ctx.drawImage(source,0,0,64,destHeight);
+    return ctx.getImageData(0,0,64,64).data;
+  }
+  renderSoftware(width,height){
+    const ctx=this.ctx2d;
+    ctx.clearRect(0,0,width,height);
+    if(!this.hasSource)return;
+    const tex=this.pixels[this.active]||this.pixels.original;
+    if(!tex)return;
+    // Back-to-front painter's algorithm on individual, nearest-neighbour texels.
+    const quadList=[];
+    const project=(xyz)=>{
+      const sy=Math.sin(this.yaw),cy=Math.cos(this.yaw);
+      const sp=Math.sin(this.pitch),cp=Math.cos(this.pitch);
+      const x=xyz[0]*cy+xyz[2]*sy;
+      const z=-xyz[0]*sy+xyz[2]*cy;
+      const y=xyz[1]*cp-z*sp;
+      const zz=xyz[1]*sp+z*cp;
+      const depth=this.distance-zz;
+      return [width/2+x*2.55*height/(2*depth),height/2-y*2.55*height/(2*depth),depth];
+    };
+    const bilinear=(corners,u,v)=>{
+      const out=[0,0,0];
+      for(let i=0;i<3;i++)out[i]=(1-v)*((1-u)*corners[0][i]+u*corners[1][i])+v*((1-u)*corners[3][i]+u*corners[2][i]);
+      return out;
+    };
+    for(const part of this.parts){
+      if(!this.visible[part.name])continue;
+      if(part.layer&&!this.visible[part.layer])continue;
+      const faceKeys=['front','back','right','left','top','bottom'];
+      for(let fi=0;fi<6;fi++){
+        const uv=part.uv[faceKeys[fi]], vertices=part.vertices;
+        const base=fi*36;
+        const corners=[0,1,2,5].map(index=>[vertices[base+index*6],vertices[base+index*6+1],vertices[base+index*6+2]]);
+        const shade=vertices[base+5];
+        for(let yy=0;yy<uv.h;yy++)for(let xx=0;xx<uv.w;xx++){
+          const tx=uv.x+(uv.mirror?uv.w-1-xx:xx), ty=uv.y+yy;
+          const si=(ty*64+tx)*4;
+          const alpha=tex[si+3];
+          if(!alpha)continue;
+          const rgba=`rgba(${Math.min(255,Math.round(tex[si]*shade))},${Math.min(255,Math.round(tex[si+1]*shade))},${Math.min(255,Math.round(tex[si+2]*shade))},${alpha/255})`;
+          const u0=xx/uv.w,u1=(xx+1)/uv.w,v0=yy/uv.h,v1=(yy+1)/uv.h;
+          const polygon=[bilinear(corners,u0,v0),bilinear(corners,u1,v0),bilinear(corners,u1,v1),bilinear(corners,u0,v1)].map(project);
+          const depth=polygon.reduce((n,p)=>n+p[2],0)/4;
+          quadList.push({polygon,depth,rgba});
+        }
+      }
+    }
+    quadList.sort((a,b)=>b.depth-a.depth);
+    for(const q of quadList){
+      const ps=q.polygon;
+      ctx.beginPath();ctx.moveTo(ps[0][0],ps[0][1]);
+      for(let i=1;i<4;i++)ctx.lineTo(ps[i][0],ps[i][1]);
+      ctx.closePath();ctx.fillStyle=q.rgba;ctx.fill();
+    }
+  }
+  render(){
+    const g=this.gl;
+    if(!g && !this.ctx2d)return;
+    const width=Math.max(1,Math.floor(this.canvas.clientWidth * Math.min(2,window.devicePixelRatio||1)));
+    const height=Math.max(1,Math.floor(this.canvas.clientHeight * Math.min(2,window.devicePixelRatio||1)));
+    if(this.canvas.width!==width || this.canvas.height!==height){this.canvas.width=width;this.canvas.height=height;}
+    if(!g){this.renderSoftware(width,height);return;}
+    g.viewport(0,0,width,height);
+    g.clearColor(0,0,0,0);
+    g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);
+    if(!this.hasSource)return;
+    const texture=this.textures[this.active]||this.textures.original;
+    if(!texture)return;
+    g.useProgram(this.program);
+    g.activeTexture(g.TEXTURE0);
+    g.bindTexture(g.TEXTURE_2D,texture);
+    g.uniform2f(this.locations.angle,this.yaw,this.pitch);
+    g.uniform1f(this.locations.distance,this.distance);
+    g.uniform1f(this.locations.aspect,width/height);
+    const stride=6*4;
+    g.bindBuffer(g.ARRAY_BUFFER,this.vertexBuffer);
+    g.enableVertexAttribArray(this.locations.pos);g.enableVertexAttribArray(this.locations.uv);
+    g.enableVertexAttribArray(this.locations.light);
+    g.vertexAttribPointer(this.locations.pos,3,g.FLOAT,false,stride,0);
+    g.vertexAttribPointer(this.locations.uv,2,g.FLOAT,false,stride,3*4);
+    g.vertexAttribPointer(this.locations.light,1,g.FLOAT,false,stride,5*4);
+    for(const part of this.parts){
+      if(!this.visible[part.name])continue;
+      if(part.layer && !this.visible[part.layer])continue;
+      g.bufferData(g.ARRAY_BUFFER,part.vertices,g.STATIC_DRAW);
+      g.drawArrays(g.TRIANGLES,0,part.vertices.length/6);
+    }
+  }
+}
+window.Skin3DViewer=Skin3DViewer;
+
+</script>
+<script>
+'use strict';
+
+// Head: 14 changed pixels from the two user-supplied reference PNGs.
+// Body: entire 8×4 underside of the torso (UV x=28..35, y=16..19)
+// copied verbatim (RGBA) from the provided AFTER reference PNG.
+// No edits at the old 3-pixel right-edge location.
+const PIXEL_EDITS = [
+  [16,3,232,214,214,255,"head"],
+  [23,3,232,214,214,255,"head"],
+  [16,4,232,214,214,255,"head"],
+  [23,4,232,214,214,255,"head"],
+  [16,5,255,175,166,255,"head"],
+  [17,5,250,230,233,255,"head"],
+  [19,5,69,69,69,255,"head"],
+  [20,5,250,137,120,255,"head"],
+  [22,5,250,230,233,255,"head"],
+  [23,5,255,175,166,255,"head"],
+  [17,6,69,69,69,255,"head"],
+  [19,6,69,69,69,255,"head"],
+  [20,6,69,69,69,255,"head"],
+  [22,6,69,69,69,255,"head"],
+  [28,16,167,167,167,255,"body"],
+  [29,16,48,47,46,255,"body"],
+  [30,16,167,167,167,255,"body"],
+  [31,16,48,47,46,255,"body"],
+  [32,16,48,47,46,255,"body"],
+  [33,16,167,167,167,255,"body"],
+  [34,16,48,47,46,255,"body"],
+  [35,16,167,167,167,255,"body"],
+  [28,17,255,175,166,255,"body"],
+  [29,17,250,230,233,255,"body"],
+  [30,17,167,167,167,255,"body"],
+  [31,17,48,47,46,255,"body"],
+  [32,17,250,137,120,255,"body"],
+  [33,17,167,167,167,255,"body"],
+  [34,17,250,230,233,255,"body"],
+  [35,17,255,175,166,255,"body"],
+  [28,18,167,167,167,255,"body"],
+  [29,18,167,167,167,255,"body"],
+  [30,18,167,167,167,255,"body"],
+  [31,18,167,167,167,255,"body"],
+  [32,18,167,167,167,255,"body"],
+  [33,18,167,167,167,255,"body"],
+  [34,18,167,167,167,255,"body"],
+  [35,18,167,167,167,255,"body"],
+  [28,19,167,167,167,255,"body"],
+  [29,19,167,167,167,255,"body"],
+  [30,19,167,167,167,255,"body"],
+  [31,19,167,167,167,255,"body"],
+  [32,19,167,167,167,255,"body"],
+  [33,19,167,167,167,255,"body"],
+  [34,19,167,167,167,255,"body"],
+  [35,19,167,167,167,255,"body"],
+  [9, 12, 212, 212, 212, 255, "faceBase"],
+  [10, 12, 212, 212, 212, 255, "faceBase"],
+  [13, 12, 212, 212, 212, 255, "faceBase"],
+  [14, 12, 212, 212, 212, 255, "faceBase"],
+  [10, 13, 212, 212, 212, 255, "faceBase"],
+  [14, 13, 212, 212, 212, 255, "faceBase"],
+  [8, 14, 223, 141, 153, 255, "faceBase"],
+  [9, 14, 199, 192, 190, 255, "faceBase"],
+  [10, 14, 189, 182, 180, 255, "faceBase"],
+  [14, 14, 199, 192, 190, 255, "faceBase"],
+  [15, 14, 223, 141, 153, 255, "faceBase"],
+  [11, 15, 22, 14, 25, 255, "faceBase"],
+  [12, 15, 22, 14, 25, 255, "faceBase"]
+];
+
+const GROUPS = [
+  {id:'head',title:'下巴',rect:{x:13,y:1,w:13,h:9},color:'#f5b1a8'},
+  {id:'body',title:'屁股 · 身體底面（8×4）',rect:{x:26,y:14,w:12,h:8},color:'#e9c1b7'},
+  {id:'faceBase',title:'蝦尾臉 · 臉部正面',rect:{x:7,y:9,w:10,h:8},color:'#f5b1a8'},
+];
+const $ = (id) => document.getElementById(id);
+const els = {
+  input:$('fileInput'),drop:$('dropzone'),sample:$('sampleBtn'),sampleFace:$('sampleFaceBtn'),convert:$('convertBtn'),
+  download:$('downloadBtn'),message:$('message'),info:$('fileInfo'),fileName:$('fileName'),
+  fileMeta:$('fileMeta'),before:$('beforeCanvas'),after:$('afterCanvas'),beforeEmpty:$('beforeEmpty'),
+  afterEmpty:$('afterEmpty'),beforeSize:$('beforeSize'),afterSize:$('afterSize'),
+  statTarget:$('statTarget'),statChanged:$('statChanged'),statResolution:$('statResolution'),
+  detailGrid:$('detailGrid'),detailsPlaceholder:$('detailsPlaceholder'),
+  checks:{head:$('groupHead'),body:$('groupBody'),faceBase:$('groupFace')},
+  preserve:$('preserveTransparency')
+};
+let currentFileName = '';
+let sourceLoaded = false;
+let converted = false;
+let currentScale = 1;
+let sourceImageData = null;
+const viewer3d = new Skin3DViewer($('skin3dCanvas'),$('viewerWarning'),$('viewerPlaceholder'));
+const viewerSourceSelect=$('viewerSource');
+const viewerConvertedOption=$('viewerConvertedOption');
+$('viewerArmModel').addEventListener('change',event=>viewer3d.setArmModel(event.target.value));
+viewerSourceSelect.addEventListener('change',event=>viewer3d.setMode(event.target.value));
+$('viewerReset').addEventListener('click',()=>viewer3d.resetView());
+document.querySelectorAll('[data-viewer-part]').forEach(check=>{
+  check.addEventListener('change',()=>viewer3d.setVisible(check.dataset.viewerPart,check.checked));
+});
+
+function setMessage(msg,type=''){
+  els.message.textContent=msg;
+  els.message.className='message'+(type?' '+type:'');
+}
+function enabledEdits(){
+  return PIXEL_EDITS.filter((p)=>els.checks[p[6]].checked);
+}
+function refreshCount(){
+  els.statTarget.innerHTML=enabledEdits().length+' <span class="unit">px</span>';
+}
+function resetOutput(){
+  converted=false;
+  viewer3d.clearResult();
+  viewerSourceSelect.value='original';
+  viewerConvertedOption.disabled=true;
+  els.after.hidden=true;
+  els.afterEmpty.hidden=false;
+  els.afterSize.textContent='—';
+  els.statChanged.textContent='—';
+  els.download.disabled=true;
+  els.detailGrid.hidden=true;
+  els.detailGrid.replaceChildren();
+  els.detailsPlaceholder.hidden=false;
+}
+function invalidated(){
+  refreshCount();
+  if(!sourceLoaded)return;
+  if(converted){resetOutput();setMessage('設定已更改，請重新按下「轉換所選樣式」。');}
+}
+new Set(Object.values(els.checks)).forEach((checkbox)=>checkbox.addEventListener('change',invalidated));
+els.preserve.addEventListener('change',invalidated);
+
+// Validate genuine image bytes via browser PNG decoder, not only filename/MIME.
+function isSupportedSize(width,height){
+  return width>=64 && width%64===0 && Number.isInteger(width/64) &&
+    (height===width || height===width/2);
+}
+function setupOriginal(img,filename,byteLength){
+  const w=img.naturalWidth,h=img.naturalHeight;
+  if(!isSupportedSize(w,h)) throw new Error(`圖片尺寸為 ${w}×${h}；請使用 64×64、64×32 或等比例高清 Skin PNG。`);
+  currentScale=w/64;
+  currentFileName=filename;
+  els.before.width=w;els.before.height=h;
+  const ctx=els.before.getContext('2d',{willReadFrequently:true});
+  ctx.clearRect(0,0,w,h);
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(img,0,0);
+  sourceImageData=ctx.getImageData(0,0,w,h);
+  sourceLoaded=true;
+  viewer3d.setSource(els.before);
+  els.before.hidden=false;
+  els.beforeEmpty.hidden=true;
+  els.beforeSize.textContent=`${w} × ${h}`;
+  els.statResolution.textContent=`${w}×${h}`;
+  els.fileName.textContent=filename;
+  els.fileMeta.textContent=`${w} × ${h} px · ${byteLength ? formatBytes(byteLength) : '範例圖片'}`;
+  els.info.hidden=false;
+  els.convert.disabled=false;
+  resetOutput();
+  refreshCount();
+  setMessage('Skin 已載入。按下「轉換所選樣式」開始加入筆畫。','success');
+}
+function formatBytes(n){return n<1024?`${n} B`:`${(n/1024).toFixed(1)} KB`;}
+function decodePNG(blob,filename){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(blob);
+    const img=new Image();
+    img.onload=()=>{
+      try{setupOriginal(img,filename,blob.size);resolve();}
+      catch(e){reject(e);}
+      finally{URL.revokeObjectURL(url);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('圖片解碼失敗，請確認檔案是有效的 PNG。'));};
+    img.src=url;
+  });
+}
+async function handleFile(file){
+  if(!file)return;
+  if(!file.name.toLowerCase().endsWith('.png') && file.type!=='image/png'){
+    setMessage('只支援 PNG 格式，請重新選擇 Skin 檔案。','error');return;
+  }
+  try{await decodePNG(file,file.name);}
+  catch(e){setMessage(e.message||'無法讀取這張圖片。','error');}
+}
+els.input.addEventListener('change',e=>{handleFile(e.target.files?.[0]);e.target.value='';});
+els.drop.addEventListener('click',()=>els.input.click());
+els.drop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();els.input.click();}});
+['dragenter','dragover'].forEach(event=>els.drop.addEventListener(event,e=>{e.preventDefault();e.stopPropagation();els.drop.classList.add('dragging');}));
+['dragleave','drop'].forEach(event=>els.drop.addEventListener(event,e=>{e.preventDefault();e.stopPropagation();els.drop.classList.remove('dragging');}));
+els.drop.addEventListener('drop',e=>handleFile(e.dataTransfer?.files?.[0]));
+
+// Self-contained sample: works even if index.html is opened directly without localhost.
+const EMBEDDED_SAMPLE = 'data:image/png;base64,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';
+const EMBEDDED_FACE_SAMPLE = 'data:image/png;base64,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';
+els.sample.addEventListener('click',async()=>{
+  try{
+    const response=await fetch(EMBEDDED_SAMPLE);
+    const blob=await response.blob();
+    els.checks.head.checked=true;els.checks.body.checked=true;els.checks.faceBase.checked=false;
+    await decodePNG(blob,'下巴與屁股範例.png');
+  }catch(e){setMessage('範例圖片載入失敗：'+e.message,'error');}
+});
+els.sampleFace.addEventListener('click',async()=>{
+  try{
+    const response=await fetch(EMBEDDED_FACE_SAMPLE);
+    const blob=await response.blob();
+    els.checks.head.checked=false;els.checks.body.checked=false;els.checks.faceBase.checked=true;
+    await decodePNG(blob,'蝦尾臉範例.png');
+  }catch(e){setMessage('蝦尾臉範例載入失敗：'+e.message,'error');}
+});
+
+function transformSkin(){
+  if(!sourceLoaded||!sourceImageData)return;
+  const w=els.before.width,h=els.before.height,s=currentScale;
+  const buffer=new Uint8ClampedArray(sourceImageData.data);
+  let changed=0,skipped=0;
+  const targets=enabledEdits();
+  for(const [x,y,r,g,b,a,group] of targets){
+    // Each reference pixel becomes a s×s square at higher resolutions.
+    for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++){
+      const index=4*((y*s+dy)*w+x*s+dx);
+      if(index<0||index+3>=buffer.length)continue;
+      const alpha=buffer[index+3];
+      if(group==='head'&&els.preserve.checked&&alpha===0){skipped++;continue;}
+      if(buffer[index]!==r||buffer[index+1]!==g||buffer[index+2]!==b||alpha!==a)changed++;
+      buffer[index]=r;buffer[index+1]=g;buffer[index+2]=b;buffer[index+3]=a;
+    }
+  }
+  els.after.width=w;els.after.height=h;
+  const ctx=els.after.getContext('2d',{willReadFrequently:true});
+  ctx.putImageData(new ImageData(buffer,w,h),0,0);
+  els.after.hidden=false;
+  els.afterEmpty.hidden=true;
+  els.afterSize.textContent=`${w} × ${h}`;
+  els.statChanged.innerHTML=`${changed} <span class="unit">px</span>`;
+  converted=true;
+  viewer3d.setResult(els.after);
+  viewerConvertedOption.disabled=false;
+  viewerSourceSelect.value='converted';
+  els.download.disabled=false;
+  renderDetailCards();
+  setMessage(`轉換完成！實際修改 ${changed} 個像素${skipped?'，略過 '+skipped+' 個透明像素':''}。`,'success');
+}
+els.convert.addEventListener('click',transformSkin);
+
+function renderDetailCards(){
+  els.detailGrid.replaceChildren();
+  for(const group of GROUPS){
+    if(!els.checks[group.id].checked)continue;
+    const count=PIXEL_EDITS.filter(p=>p[6]===group.id).length;
+    const root=document.createElement('article');root.className='detail-card';
+    const head=document.createElement('div');head.className='detail-header';
+    const title=document.createElement('strong');title.textContent=group.title;
+    const pill=document.createElement('span');pill.className='pixel-pill';pill.textContent=count+' PX';
+    head.append(title,pill);
+    const compare=document.createElement('div');compare.className='detail-compare';
+    for(const [title,canvasSrc] of [['原始',els.before],['轉換後',els.after]]){
+      const item=document.createElement('div');
+      const frame=document.createElement('div');frame.className='mini-preview';
+      const canvas=document.createElement('canvas');
+      canvas.width=group.rect.w*14;canvas.height=group.rect.h*14;
+      const c=canvas.getContext('2d');c.imageSmoothingEnabled=false;
+      c.drawImage(canvasSrc,group.rect.x*currentScale,group.rect.y*currentScale,group.rect.w*currentScale,group.rect.h*currentScale,0,0,canvas.width,canvas.height);
+      frame.append(canvas);
+      const label=document.createElement('div');label.className='mini-tag';label.textContent=title;
+      item.append(frame,label);compare.append(item);
+    }
+    root.append(head,compare);els.detailGrid.append(root);
+  }
+  els.detailsPlaceholder.hidden=els.detailGrid.childElementCount>0;
+  els.detailGrid.hidden=els.detailGrid.childElementCount===0;
+  if(els.detailGrid.childElementCount===0)els.detailsPlaceholder.textContent='目前沒有選取筆畫區域。';
+}
+els.download.addEventListener('click',()=>{
+  if(!converted)return;
+  els.after.toBlob(blob=>{
+    if(!blob){setMessage('產生 PNG 失敗，請再次轉換。','error');return;}
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    const safeName=(currentFileName||'skin').replace(/\.png$/i,'').replace(/[\\/:*?"<>|]/g,'_');
+    a.download=`${safeName}_converted.png`;
+    document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),15000);
+    setMessage('PNG 下載已開始，可直接匯入 Minecraft 使用。','success');
+  },'image/png');
+});
+refreshCount();
+</script>
+</body>
+</html>
